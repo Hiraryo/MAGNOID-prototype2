@@ -10,13 +10,13 @@
 /[Ll]ogs/
 /[Uu]ser[Ss]ettings/
 /[Mm]emoryCaptures/
-/[Aa]ssets/Other/
-/[Aa]ssets/Story/
-/[Aa]ssets/UI/
-/[Aa]ssets/Graphic/
-/[Aa]ssets/3DCG/
-/[Aa]ssets/Sound/
-/[Aa]ssets/Scene/
+Other/
+Story/
+UI/
+Graphic/
+3DCG/
+Sound/
+Scene/
 
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
@@ -33,7 +33,7 @@
 
 # Visual Studio cache directory
 .vs/
-.vscode/
+.vscode
 
 # Gradle cache directory
 .gradle/
