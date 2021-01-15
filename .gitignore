@@ -10,20 +10,20 @@
 /[Ll]ogs/
 /[Uu]ser[Ss]ettings/
 /[Mm]emoryCaptures/
-Other/
-Story/
-UI/
-Graphic/
-3DCG/
-Sound/
-Scenes/
+/[Aa]ssets/Other/
+/[Aa]ssets/Story/
+/[Aa]ssets/UI/
+/[Aa]ssets/Graphic/
+/[Aa]ssets/3DCG/
+/[Aa]ssets/Sound/
+/[Aa]ssets/Scenes/
 
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
 /[Mm]emoryCaptures/
 
 # Asset meta data should only be ignored when the corresponding asset is also ignored
-!/[Aa]ssets/**/*.meta
+/[Aa]ssets/**/*.meta
 
 # Uncomment this line if you wish to ignore the asset store tools plugin
 # /[Aa]ssets/AssetStoreTools*
