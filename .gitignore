@@ -10,13 +10,13 @@
 /[Ll]ogs/
 /[Uu]ser[Ss]ettings/
 /[Mm]emoryCaptures/
-/[Aa]ssets/[Oo]ther/
-/[Aa]ssets/[Ss]tory/
-/[Aa]ssets/[Uu]I/
-/[Aa]ssets/[Gg]raphic/
+/[Aa]ssets/Other/
+/[Aa]ssets/Story/
+/[Aa]ssets/UI/
+/[Aa]ssets/Graphic/
 /[Aa]ssets/3DCG/
-/[Aa]ssets/[Ss]ound/
-/[Aa]ssets/[Ss]cene/
+/[Aa]ssets/Sound/
+/[Aa]ssets/Scene/
 
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
