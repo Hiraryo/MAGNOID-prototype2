@@ -15,13 +15,11 @@ public class HAL2Controller : MonoBehaviour
     private bool _JumpTrigger = false;                      //ジャンプキー(今回はスペース)を押し続けた時間を測るためのフラグ（true : 押された, false : 離した）
     private bool _Grounded;                                 //地面に足がついているかを判定するフラグ（true : 接地している, false : 接地していない）
     private Vector3 _moveDirection = Vector3.zero;          //移動する為の方向のベクトルを代入する変数
-    private CharacterController _controller;
     private Rigidbody _myrigid;
     private Animator _animator;
 
     void Start()
     {
-        _controller = GetComponent<CharacterController>();
         _myrigid = GetComponent<Rigidbody>();
         _animator = GetComponent<Animator>();
     }
