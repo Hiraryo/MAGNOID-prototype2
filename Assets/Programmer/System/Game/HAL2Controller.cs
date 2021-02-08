@@ -1,12 +1,11 @@
-﻿//このプログラムは、CharacterControllerを使った移動＋キーを押し続けた時間に応じてジャンプ力が変わる移動方法です。(RigidBody:あり)
+//このプログラムは、Rigidbodyを使った移動プログラムです。
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(CharacterController))]             //CharacterControllerコンポーネントを自動的に追加
 [RequireComponent(typeof(Rigidbody))]                       //RigidBodyコンポーネントを自動的に追加
 
-public class HAL2_Controller : MonoBehaviour
+public class HAL2Controller : MonoBehaviour
 {
     [SerializeField] private float _moveSpeed = 5.0f;       //移動速度
     [SerializeField] private float _rotateSpeed = 120.0f;   //回転速度
@@ -18,13 +17,13 @@ public class HAL2_Controller : MonoBehaviour
     private Vector3 _moveDirection = Vector3.zero;          //移動する為の方向のベクトルを代入する変数
     private CharacterController _controller;
     private Rigidbody _myrigid;
-    private animator _animator;
+    private Animator _animator;
 
     void Start()
     {
         _controller = GetComponent<CharacterController>();
         _myrigid = GetComponent<Rigidbody>();
-        _animator = GetComponent<animator>();
+        _animator = GetComponent<Animator>();
     }
 
     void Update()
@@ -49,7 +48,7 @@ public class HAL2_Controller : MonoBehaviour
             _flyingTime += 0.01f;
         }
         //移動処理
-        Vector3 _velocity = new Vector3(0,0,v);
+        Vector3 _velocity = new Vector3(0,0,_v);
         _velocity = transform.TransformDirection(_velocity);  //ローカル空間からワールド空間へVectorを変換
         //Rigidbody + AddForceを使った移動方法をここに書く
         //
@@ -58,9 +57,9 @@ public class HAL2_Controller : MonoBehaviour
         transform.localPosition += _velocity * _moveSpeed * Time.fixedDeltaTime;
 
         //回転処理
-        transform.Rotate(0, h * _rotateSpeed * Time.fixedDeltaTime, 0);
+        transform.Rotate(0, _h * _rotateSpeed * Time.fixedDeltaTime, 0);
 
-        _moveDirection = _moveSpeed * v * gameObject.transform.forward;
+        _moveDirection = _moveSpeed * _v * gameObject.transform.forward;
         if(_Grounded == true)
         {
             if(_moveDirection.magnitude > 0.1f)
@@ -77,7 +76,7 @@ public class HAL2_Controller : MonoBehaviour
                 _myrigid.AddForce(Vector3.up * _jumpPower);
             }
         }
-        Debug.Log("moveDirection : " + _moveDirection + ", Position : " + transform.position + ", Rotation : " + transform.rotation);
+        //Debug.Log("moveDirection : " + _moveDirection + ", Position : " + transform.position + ", Rotation : " + transform.rotation);
     }
 
     void OnTriggerEnter(Collider HAL2)

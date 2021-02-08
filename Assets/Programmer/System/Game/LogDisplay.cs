@@ -5,14 +5,12 @@ using System.Text;
 
 public class LogDisplay : MonoBehaviour
 {
-    // Maximun number of logs saved
-    [SerializeField] int m_MaxLogCount = 20;
-    // Area to display logs
-    [SerializeField] Rect m_Area = new Rect(50, 0, 1000, 400);
-    // Variable to put the log string
-    Queue<string> m_LogMessages = new Queue<string>();
-    // This is used to combine the strings in the log
-    StringBuilder m_StringBuilder = new StringBuilder();
+    const float DISPLAYTIME = 5.0f;
+    [SerializeField] private int _MaxLogCount = 20;                        // Maximun number of logs saved
+    [SerializeField] private float _logElapsedTime;                           // This variable represents the elapsed time for the log display.
+    [SerializeField] private Rect _area = new Rect(50, 0, 1000, 400);      // Area to display logs
+    private Queue<string> _logMessages = new Queue<string>();                     // Variable to put the log string
+    private StringBuilder _stringBuilder = new StringBuilder();                    // This is used to combine the strings in the log
 
     // Start is called before the first frame update
     void Start()
@@ -21,30 +19,35 @@ public class LogDisplay : MonoBehaviour
         Application.logMessageReceived += LogReceived;
     }
 
+    void Update()
+    {
+        //_logElapsedTime >= DISPLAYTIME ? _logMessages.Clear() : _logElapsedTime ++;
+    }
+
     // LogReceived is called when the log is output
     void LogReceived(string text, string stackTrace, LogType type)
     {
         // Add logs to Queue
-        m_LogMessages.Enqueue(text);
+        _logMessages.Enqueue(text);
         // If the number of logs exceeds the upper limit, delete the oldest one
-        while(m_LogMessages.Count > m_MaxLogCount)
+        while(_logMessages.Count > _MaxLogCount)
         {
-            m_LogMessages.Dequeue();
+            _logMessages.Dequeue();
         }
     }
 
     void OnGUI()
     {
         // Reset the contents of StringBuilder
-        m_StringBuilder.Length = 0;
+        _stringBuilder.Length = 0;
 
         // Combine log strings
-        foreach (string s in m_LogMessages)
+        foreach (string s in _logMessages)
         {
-            m_StringBuilder.Append(s).Append(System.Environment.NewLine);
+            _stringBuilder.Append(s).Append(System.Environment.NewLine);
         }
 
         // Display on screen
-        GUI.Label(m_Area, m_StringBuilder.ToString());
+        GUI.Label(_area, _stringBuilder.ToString());
     }
 }
