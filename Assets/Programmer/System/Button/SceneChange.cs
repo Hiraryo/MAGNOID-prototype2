@@ -8,7 +8,7 @@ public class SceneChange : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Invoke("ChangeScene",1.5f);
+
     }
 
     public void ChangeScene()
