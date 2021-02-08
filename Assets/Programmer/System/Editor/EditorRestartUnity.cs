@@ -1,3 +1,4 @@
+//このサイト（https://qiita.com/r-ngtm/items/c2ee6abea11e80cc5ba2）を参考にしました。
 using UnityEngine;
 using UnityEditor;
 using System.Collections;
