@@ -42,6 +42,18 @@ public class HAL2Controller : MonoBehaviour
         InputGetKey();
         JumpMethod();
         MoveMethod();
+        if(Input.GetMouseButtonDown(0))
+        {
+            Attack(0);
+        }
+        if(Input.GetMouseButtonDown(1))
+        {
+            Attack(1);
+        }
+        if(Input.GetKeyDown(KeyCode.F))
+        {
+            Sidestep();
+        }
     }
 
     //キーボードの入力受付
@@ -64,7 +76,7 @@ public class HAL2Controller : MonoBehaviour
     //移動処理
     void MoveMethod()
     {
-        //移動速度の判定
+        //移動速度の判定(移動：WASD or カーソルキー、ダッシュ：左シフトキー)
         _moveSpeed = (Input.GetKey(KeyCode.LeftShift)) ? _dashSpeed : _walkSpeed;
 
         //移動
@@ -93,8 +105,31 @@ public class HAL2Controller : MonoBehaviour
                 _animator.SetBool("Jump",true);
             }
         }
-        Debug.Log("_Grounded : " + _Grounded + ", moveSpeed : " + _moveSpeed + ", _v : " + _v);
-    }　　　
+    }
+    //攻撃(通常：マウス左クリック、強攻撃：マウス右クリック)
+    void Attack(int pattern)
+    {
+        switch (pattern)
+        {
+            //通常攻撃
+            case 0:
+                Debug.Log("通常攻撃");
+                break;
+
+            //強攻撃
+            case 1:
+                Debug.Log("強攻撃");
+                break;
+
+            default:
+                break;
+        }
+    }
+    //回避(Fキー)
+    void Sidestep()
+    {
+        Debug.Log("回避");
+    }
 
     //接地判定
     void OnCollisionEnter(Collision HAL2)
