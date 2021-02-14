@@ -40,19 +40,22 @@ public class HAL2Controller : MonoBehaviour
     void FixedUpdate()
     {
         InputGetKey();
-        JumpMethod();
         MoveMethod();
+        if(Input.GetKeyDown(KeyCode.Space) && _Grounded)
+        {
+            JumpMethod();
+        }
         if(Input.GetMouseButtonDown(0))
         {
-            Attack(0);
+            AttackMethod(0);
         }
         if(Input.GetMouseButtonDown(1))
         {
-            Attack(1);
+            AttackMethod(1);
         }
         if(Input.GetKeyDown(KeyCode.F))
         {
-            Sidestep();
+            SidestepMethod();
         }
     }
 
@@ -61,16 +64,6 @@ public class HAL2Controller : MonoBehaviour
     {
         _h = Input.GetAxis("Horizontal");
         _v = Input.GetAxis("Vertical");
-    }
-
-    //ジャンプ処理
-    void JumpMethod()
-    {
-        //浮遊時間の計測
-        if(_JumpTrigger == true)
-        {
-            _flyingTime += 0.01f;
-        }
     }
 
     //移動処理
@@ -96,18 +89,26 @@ public class HAL2Controller : MonoBehaviour
             else
             {
                 _animator.SetFloat("Speed", 0f);
-                _animator.SetBool("Jump",false);
             }
-            if(Input.GetKeyDown(KeyCode.Space))
-            {
-                _Grounded = false;
-                _myrigid.AddForce(Vector3.up * _jumpPower);
-                _animator.SetBool("Jump",true);
-            }
+            _animator.SetBool("Jump",false);
         }
     }
+
+    //ジャンプ処理
+    void JumpMethod()
+    {
+        _Grounded = false;
+        _myrigid.AddForce(Vector3.up * _jumpPower);
+        _animator.SetBool("Jump",true);
+        //浮遊時間の計測
+        if(_JumpTrigger == true)
+        {
+            _flyingTime += 0.01f;
+        }
+    }
+
     //攻撃(通常：マウス左クリック、強攻撃：マウス右クリック)
-    void Attack(int pattern)
+    void AttackMethod(int pattern)
     {
         switch (pattern)
         {
@@ -126,7 +127,7 @@ public class HAL2Controller : MonoBehaviour
         }
     }
     //回避(Fキー)
-    void Sidestep()
+    void SidestepMethod()
     {
         Debug.Log("回避");
     }
