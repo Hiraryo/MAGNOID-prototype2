@@ -41,22 +41,10 @@ public class HAL2Controller : MonoBehaviour
     {
         InputGetKey();
         MoveMethod();
-        if(Input.GetKeyDown(KeyCode.Space) && _Grounded)
-        {
-            JumpMethod();
-        }
-        if(Input.GetMouseButtonDown(0))
-        {
-            AttackMethod(0);
-        }
-        if(Input.GetMouseButtonDown(1))
-        {
-            AttackMethod(1);
-        }
-        if(Input.GetKeyDown(KeyCode.F))
-        {
-            SidestepMethod();
-        }
+        if (Input.GetKeyDown(KeyCode.Space)&&_Grounded) {JumpMethod();}
+        if (Input.GetMouseButtonDown(0)) {AttackMethod(0);}
+        if (Input.GetMouseButtonDown(1)) {AttackMethod(1);}
+        if (Input.GetKeyDown(KeyCode.F)) {SidestepMethod();}
     }
 
     //キーボードの入力受付
