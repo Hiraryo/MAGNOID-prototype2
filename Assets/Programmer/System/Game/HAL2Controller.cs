@@ -8,6 +8,7 @@ using UnityEngine;
 
 public class HAL2Controller : MonoBehaviour
 {
+    [SerializeField] private GameObject _fpsCamera,_tpsCamera;
     //歩行速度
     [SerializeField] private float _walkSpeed = 5.0f;
     //走行速度
@@ -28,7 +29,6 @@ public class HAL2Controller : MonoBehaviour
     private bool _Grounded = true;
     //移動する為の方向のベクトルを代入する変数
     private Vector3 _moveDirection = Vector3.zero;
-    private Vector3 _velocity = Vector3.zero;
     private Rigidbody _myrigid;
     private Animator _animator;
     void Start()
@@ -37,14 +37,15 @@ public class HAL2Controller : MonoBehaviour
         _animator = GetComponent<Animator>();
     }
 
-    void FixedUpdate()
+    void Update()
     {
         InputGetKey();
         MoveMethod();
-        if (Input.GetKeyDown(KeyCode.Space)&&_Grounded) {JumpMethod();}
-        if (Input.GetMouseButtonDown(0)) {AttackMethod(0);}
-        if (Input.GetMouseButtonDown(1)) {AttackMethod(1);}
+        if (Input.GetButtonDown("Jump")&&_Grounded) {JumpMethod();}
+        if (Input.GetButtonDown("NormalAttack")) {AttackMethod(0);}
+        if (Input.GetButtonDown("HardAttack")) {AttackMethod(1);}
         if (Input.GetKeyDown(KeyCode.F)) {SidestepMethod();}
+        if (Input.GetKeyDown(KeyCode.Return)) {CameraChange();}
     }
 
     //キーボードの入力受付
@@ -52,19 +53,20 @@ public class HAL2Controller : MonoBehaviour
     {
         _h = Input.GetAxis("Horizontal");
         _v = Input.GetAxis("Vertical");
+
     }
 
     //移動処理
     void MoveMethod()
     {
         //移動速度の判定(移動：WASD or カーソルキー、ダッシュ：左シフトキー)
-        _moveSpeed = (Input.GetKey(KeyCode.LeftShift)) ? _dashSpeed : _walkSpeed;
+        _moveSpeed = (Input.GetButton("Dash")) ? _dashSpeed : _walkSpeed;
 
         //移動
-        transform.Translate(0,0,_v * _moveSpeed * Time.fixedDeltaTime);
+        transform.Translate(0,0,_v * _moveSpeed * Time.deltaTime);
 
         //回転
-        transform.Rotate(0, _h * _rotateSpeed * Time.fixedDeltaTime,0);
+        transform.Rotate(0, _h * _rotateSpeed * Time.deltaTime,0);
 
         _moveDirection = _v * gameObject.transform.forward;
         _JumpTrigger = (_Grounded) ? false : true;
@@ -118,6 +120,12 @@ public class HAL2Controller : MonoBehaviour
     void SidestepMethod()
     {
         Debug.Log("回避");
+    }
+
+    void CameraChange()
+    {
+        _fpsCamera.SetActive(!_fpsCamera.activeSelf);
+        _tpsCamera.SetActive(!_tpsCamera.activeSelf);
     }
 
     //接地判定
