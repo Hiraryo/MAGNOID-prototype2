@@ -8,7 +8,8 @@ using UnityEngine;
 
 public class HAL2Controller : MonoBehaviour
 {
-    [SerializeField] private GameObject _fpsCamera,_tpsCamera;
+    [SerializeField] private float applySpeed = 0.2f;       // 振り向きの適用速度
+    [SerializeField] private PlayerFollowCamera refCamera;  // カメラの水平回転を参照する用
     //歩行速度
     [SerializeField] private float _walkSpeed = 5.0f;
     //走行速度
@@ -27,7 +28,7 @@ public class HAL2Controller : MonoBehaviour
     private bool _JumpTrigger = false;
     //地面に足がついているかを判定するフラグ（true : 接地している, false : 接地していない）
     private bool _Grounded = true;
-    //移動する為の方向のベクトルを代入する変数
+    //移動方向
     private Vector3 _moveDirection = Vector3.zero;
     private Rigidbody _myrigid;
     private Animator _animator;
@@ -45,7 +46,6 @@ public class HAL2Controller : MonoBehaviour
         if (Input.GetButtonDown("NormalAttack")) {AttackMethod(0);}
         if (Input.GetButtonDown("HardAttack")) {AttackMethod(1);}
         if (Input.GetKeyDown(KeyCode.F)) {SidestepMethod();}
-        if (Input.GetKeyDown(KeyCode.Return)) {CameraChange();}
     }
 
     //キーボードの入力受付
@@ -53,7 +53,9 @@ public class HAL2Controller : MonoBehaviour
     {
         _h = Input.GetAxis("Horizontal");
         _v = Input.GetAxis("Vertical");
-
+        _moveDirection.x = (_h == 0.0f) ? 0.0f : _h;
+        _moveDirection.z = (_v == 0.0f) ? 0.0f : _v;
+        Debug.Log("_h : " + _h + "_v : " + _v);
     }
 
     //移動処理
@@ -61,26 +63,31 @@ public class HAL2Controller : MonoBehaviour
     {
         //移動速度の判定(移動：WASD or カーソルキー、ダッシュ：左シフトキー)
         _moveSpeed = (Input.GetButton("Dash")) ? _dashSpeed : _walkSpeed;
-
-        //移動
-        transform.Translate(0,0,_v * _moveSpeed * Time.deltaTime);
-
-        //回転
-        transform.Rotate(0, _h * _rotateSpeed * Time.deltaTime,0);
-
-        _moveDirection = _v * gameObject.transform.forward;
+        
+        //移動(速度ベクトルの長さを1秒でmoveSpeedだけ進むように調整します)
+        _moveDirection = _moveDirection.normalized * _moveSpeed * Time.deltaTime;
         _JumpTrigger = (_Grounded) ? false : true;
-        if(_Grounded == true)
+        if(_moveDirection.magnitude > 0.0f)
         {
-            if(_moveDirection.magnitude > 0.1f)
+            if(_Grounded == true)
             {
                 _animator.SetFloat("Speed",_moveDirection.magnitude);
+                _animator.SetBool("Jump",false);
             }
             else
             {
                 _animator.SetFloat("Speed", 0f);
             }
-            _animator.SetBool("Jump",false);
+            // プレイヤーの回転(transform.rotation)の更新
+            // 無回転状態のプレイヤーのZ+方向(後頭部)を、
+            // カメラの水平回転(refCamera.hRotation)で回した移動の反対方向(-velocity)に回す回転に段々近づけます
+            transform.rotation = Quaternion.Slerp(transform.rotation,
+                                                Quaternion.LookRotation(refCamera.hRotation * _moveDirection),
+                                                applySpeed);
+
+            // プレイヤーの位置(transform.position)の更新
+            // カメラの水平回転(refCamera.hRotation)で回した移動方向(_moveDirection)を足し込みます
+            transform.position += refCamera.hRotation * _moveDirection;
         }
     }
 
@@ -124,8 +131,7 @@ public class HAL2Controller : MonoBehaviour
 
     void CameraChange()
     {
-        _fpsCamera.SetActive(!_fpsCamera.activeSelf);
-        _tpsCamera.SetActive(!_tpsCamera.activeSelf);
+
     }
 
     //接地判定
