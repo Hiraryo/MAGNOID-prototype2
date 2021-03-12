@@ -15,7 +15,6 @@
 ![下方向（最大）その１](https://user-images.githubusercontent.com/60394438/108002823-21a4f080-7034-11eb-8a7d-5ed64569ab78.png)
 ![下方向（最大）その２](https://user-images.githubusercontent.com/60394438/108002832-2669a480-7034-11eb-9ca6-108af52612dd.png)
 
-### 実際の様子
-
+## 実際の様子
+### 1人称視点
 https://user-images.githubusercontent.com/60394438/110986275-cfe05380-83b0-11eb-8c3b-71ec93035321.mp4
-
